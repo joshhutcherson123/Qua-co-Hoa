@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lá thư</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Dancing+Script:wght@600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        body{ justify-content: flex-start; align-items: stretch; margin: 0; padding: 0; }
+
+        .letter{
+            width: 100%;
+            max-width: none;
+            min-height: 100vh;
+            box-sizing: border-box;
+            background: transparent;
+            border-radius: 0;
+            padding: clamp(24px, 6vw, 80px);
+            box-shadow: none;
+            border: none;
+            text-align: left;
+            animation: unfold 1s cubic-bezier(.2,.8,.2,1) both;
+            transform-origin: top center;
+        }
+        @keyframes unfold{
+            from{ opacity: 0; transform: perspective(900px) rotateX(-35deg) translateY(-20px); }
+            to{ opacity: 1; transform: none; }
+        }
+
+        .header{
+            font-family: var(--font-script);
+            color: var(--rose);
+            font-size: clamp(26px, 4.8vw, 46px);
+            line-height: 1.2;
+            margin: 0 0 28px;
+            font-weight: 700;
+        }
+        .header::after{
+            content: "";
+            display: block;
+            width: 90px;
+            height: 3px;
+            margin-top: 14px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--rose), transparent);
+        }
+
+        /* các dòng hiện lần lượt, cách nhau 1.6 giây (muốn nhanh/chậm thì đổi số 1.6s) */
+        .letter .reveal{ animation-delay: calc(var(--i, 0) * 1.6s + 0.5s); }
+
+        p{
+            font-size: clamp(20px, 2.3vw, 24px);
+            line-height: 1.85;
+            letter-spacing: 0.05em;
+            color: var(--text);
+            margin: 0 0 20px;
+        }
+
+        /* Phần ký tên cuối thư: font fancy + màu tím hồng nổi bật */
+        .letter .signoff{
+            font-family: 'Pacifico', var(--font-script);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            color: #a8267f;
+            text-shadow: 0 3px 12px rgba(168, 38, 127, 0.22);
+        }
+        .letter .thuong{
+            font-size: clamp(26px, 4vw, 36px);
+            margin: 40px 0 6px;
+        }1
+        .letter .tapthe{
+            font-size: clamp(22px, 3.4vw, 30px);
+            line-height: 1.5;
+            margin: 0 0 6px;
+        }
+        .letter .ngay{
+            font-size: clamp(18px, 2.6vw, 22px);
+            margin: 0 0 40px;
+        }
+
+        .petals{
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .petal{
+            position: absolute;
+            top: -40px;
+            color: var(--rose);
+            opacity: 0;
+            animation: fall linear infinite;
+            user-select: none;
+        }
+        @keyframes fall{
+            0%  { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.55; }
+            90% { opacity: 0.45; }
+            100%{ transform: translate3d(var(--drift, 40px), 110vh, 0) rotate(360deg); opacity: 0; }
+        }
+
+        body > *:not(.petals){ position: relative; z-index: 1; }
+    </style>
+</head>
+<body>
+    <div class="letter">
+        <h1 class="header reveal" style="--i:0">GỬI CÔ HỒNG HOA, NGƯỜI CÔ MÀ 11 ANH 1 LUÔN THƯƠNG QUÝ!</h1>
+        <p class="reveal" style="--i:1">Cô Hoa thương mến!</p>
+        <p class="reveal" style="--i:2">Có những tình cảm vốn chẳng dễ dàng diễn đạt thành lời, không phải vì chúng ta không có đủ ngôn từ, mà bởi đôi khi, những gì xuất phát từ tận đáy lòng lại chẳng thể được gói ghém trọn vẹn trong vài câu chữ. Để rồi đến một ngày đặc biệt như hôm nay, khi ngồi viết những dòng thư gửi cô, chúng em mới nhận ra rằng có biết bao điều muốn nói, biết bao lời cảm ơn vẫn luôn được giữ lại trong lòng mà chưa một lần được thổ lộ.</p>
+        <p class="reveal" style="--i:3">Cô biết không, Vật lý vốn là môn học của những định luật, những công thức và những đại lượng tưởng chừng khô khan. Đó là thế giới của những chuyển động, những lực tác dụng, của ánh sáng, dòng điện và vô vàn hiện tượng diễn ra xung quanh chúng ta. Thế nhưng, qua những giờ học của cô, chúng em dần nhận ra rằng Vật lý không chỉ đơn thuần là việc tìm ra đáp án cho một bài toán hay áp dụng chính xác một công thức. Đó còn là cách quan sát thế giới, cách đặt câu hỏi trước những điều tưởng chừng quen thuộc và cách kiên nhẫn tìm kiếm lời giải cho những vấn đề chưa có đáp án. Có lẽ, điều đặc biệt nhất mà cô mang đến cho chúng em không chỉ là kiến thức của một môn học, mà còn là tinh thần ham học hỏi, sự cẩn thận và cách suy nghĩ thấu đáo trước mọi vấn đề.</p>
+        <p class="reveal" style="--i:4">Chúng em vẫn thường nghĩ, may mắn của một người học trò không chỉ nằm ở việc được học tập trong một ngôi trường tốt, được tiếp cận với những kiến thức mới mẻ, mà còn là có cơ hội gặp được những người giáo viên thực sự tận tâm với học trò. Và với chúng em, cô Hoa chính là một người như thế. Cảm ơn cô vì những giờ học đầy tâm huyết, vì đã kiên nhẫn giải thích từng công thức, từng hiện tượng, từng bài toán mà đôi khi chúng em phải loay hoay rất lâu mới có thể hiểu được. Cảm ơn cô vì những lần giảng lại, những lời nhắc nhở và cả những lúc nghiêm khắc khi chúng em chưa thực sự tập trung. Chúng em hiểu rằng đằng sau mỗi lời chỉ bảo ấy là mong muốn chúng em có thể tiến bộ, biết tư duy độc lập và không dễ dàng bỏ cuộc trước những khó khăn.</p>
+        <p class="reveal" style="--i:5">Có lẽ, trong Vật lý, chúng em đã học được rằng mọi chuyển động đều cần có lực tác dụng, mọi hiện tượng đều có nguyên nhân và mọi kết quả đều chịu sự chi phối của những quy luật nhất định. Nhưng qua cô, chúng em còn hiểu thêm rằng sự trưởng thành của một con người cũng cần có những tác động âm thầm như thế. Đó có thể là một lời động viên đúng lúc, một lần nhắc nhở chân thành hay đơn giản chỉ là sự quan tâm mà người thầy dành cho học trò của mình. Những điều ấy có thể không tạo nên sự thay đổi ngay lập tức, nhưng theo thời gian, chúng sẽ trở thành một phần quan trọng trong hành trình trưởng thành của mỗi chúng em.</p>
+        <p class="reveal" style="--i:6">Nhưng cô Hoa ơi, bên cạnh tất cả những lời cảm ơn, hôm nay chúng em cũng muốn gửi đến cô một lời xin lỗi.</p>
+        <p class="reveal" style="--i:7">Xin lỗi cô vì những lần chúng em còn chưa thực sự nghiêm túc trong giờ học, những lúc thiếu tập trung, chưa chuẩn bị bài đầy đủ hay đôi khi còn có thái độ chưa đúng mực. Xin lỗi cô vì có những lúc chúng em chưa đủ trưởng thành để hiểu hết sự tận tâm mà cô dành cho mình. Có thể khi ấy, chúng em chỉ nghĩ đơn giản rằng cô đang nhắc nhở về một bài tập, một công thức hay một yêu cầu học tập nào đó, mà chưa nhận ra rằng cô đang mong chúng em trở nên tốt hơn từng ngày. Chúng em biết mình vẫn còn nhiều thiếu sót, đôi khi còn vô tư và bồng bột, nhưng thật lòng mong cô có thể bao dung cho những vụng dại ấy của một tập thể vẫn đang trên hành trình học cách trưởng thành.</p>
+        <p class="reveal" style="--i:9">Cô Hoa à, rồi chúng em cũng sẽ lớn lên, sẽ bước qua những năm tháng học trò để đến với những chân trời mới. Có thể sau này, chúng em sẽ quên đi một vài công thức, những lần giải bài tập đến đau đầu hay cả những bài kiểm tra từng khiến mình lo lắng. Nhưng chúng em hy vọng sẽ không quên những giờ học của cô, không quên sự kiên nhẫn trong từng lời giảng và những bài học mà cô đã âm thầm gửi gắm. Bởi chúng em tin rằng, điều còn lại sau mỗi môn học không chỉ là những kiến thức có thể ghi nhớ, mà còn là những phẩm chất, những cách suy nghĩ và những giá trị sẽ đồng hành cùng chúng em trên suốt chặng đường phía trước.</p>
+        <p class="reveal" style="--i:10">Nhân ngày Nhà giáo Việt Nam 20/11, chúng em kính chúc cô luôn mạnh khỏe, bình an và hạnh phúc. Mong cô sẽ luôn giữ được ngọn lửa nhiệt huyết với nghề, luôn tìm thấy niềm vui trong từng tiết dạy và có thật nhiều những khoảnh khắc đáng nhớ bên các thế hệ học trò. Mong rằng mọi nỗ lực, tâm huyết mà cô đã dành cho nghề giáo sẽ luôn được đền đáp bằng sự trưởng thành, thành công và tình yêu thương của những người học trò mà cô từng dìu dắt.</p>
+        <p class="reveal" style="--i:11">Và cuối cùng, cô Hoa ơi, cảm ơn cô vì đã xuất hiện trong những năm tháng thanh xuân của chúng em, vì đã dành thời gian, tâm huyết và sự kiên nhẫn cho một tập thể đôi khi còn nhiều thiếu sót. Chúng em biết mình chưa phải là những học trò hoàn hảo, có thể vẫn còn khiến cô phải lo lắng và nhắc nhở nhiều lần, nhưng xin cô hãy tin rằng tất cả tình cảm và sự trân trọng mà chúng em dành cho cô đều xuất phát từ tận đáy lòng.</p>
+        <p class="reveal" style="--i:12">Nếu Vật lý giúp chúng em hiểu rằng trong vũ trụ rộng lớn này, mọi sự vật đều có những mối liên hệ và tác động nhất định, thì có lẽ, sự gặp gỡ giữa cô và chúng em cũng là một mối duyên thật đẹp. Một sự gặp gỡ tuy bình dị nhưng đã để lại những dấu ấn đáng nhớ trong hành trình trưởng thành của mỗi người.</p>
+        <p class="reveal signoff thuong" style="--i:13">Thương cô thật nhiều!</p>
+        <p class="reveal signoff tapthe" style="--i:14">Tập thể 11 Anh 1.</p>
+        <p class="reveal signoff ngay" style="--i:15">20/11/2026</p>
+    </div>
+    <script src="shared.js"></script>
+</body>
+</html>
+1

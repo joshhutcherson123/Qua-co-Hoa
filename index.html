@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .loichao{
+            font-family: var(--font-script);
+            color: var(--rose);
+            font-size: clamp(52px, 11vw, 100px);
+            margin: 0;
+            text-shadow: 0 4px 18px rgba(214, 41, 62, 0.25);
+        }
+        .dudo{
+            font-weight: 500;
+            color: var(--text);
+            font-size: clamp(18px, 3.4vw, 26px);
+            line-height: 1.6;
+            max-width: 640px;
+            margin: 14px 0 0;
+        }
+        .sticker{
+            width: min(300px, 50vw);
+            height: auto;
+            margin-top: 18px;
+            filter: drop-shadow(0 8px 10px rgba(155, 28, 49, 0.25));
+            animation: stickerPop 0.7s cubic-bezier(.2,1.6,.4,1) 1s both;
+        }
+        @keyframes stickerPop{
+            from{ opacity: 0; transform: scale(0) rotate(-20deg); }
+            to{ opacity: 1; transform: scale(1) rotate(0); }
+        }
+        #khongnhan{ position: relative; transition: transform 0.25s cubic-bezier(.3,1.6,.5,1); }
+        .tim{ display: inline-block; animation: beat 1.2s infinite; }
+        @keyframes beat{ 0%,100%{ transform: scale(1);} 50%{ transform: scale(1.25);} }
+    </style>
+</head>
+<body>
+    <h1 class="loichao reveal" style="--i:0">Hé lu cô ạ :33</h1>
+    <h2 class="dudo reveal" style="--i:2">Nhân một ngày đặc biệt, chúng em muốn tặng cô một món quà, cô có muốn nhận không ạ? <span class="tim">💗</span></h2>
+    <img class="sticker" src="Cat Bugcat GIF by Capoo.gif" alt="Sticker" onerror="this.style.display='none'">
+    <div class="btn-row reveal" style="--i:4">
+        <a href="dongy.html"><button class="btn">Có chứ!</button></a>
+        <button class="btn ghost" id="khongnhan">Phiền lắm</button>
+    </div>
+    <script src="shared.js"></script>
+    <script>
+        // Nút "Thôi khỏi đe!" cứ bị chạm vào là né sang chỗ khác :D
+        var nut = document.getElementById('khongnhan');
+        var lanNe = 0, tx = 0, ty = 0;
+        var cau = ['Phiền lắm', 'Không nhận thật ạ 😞', 'Nhận đi mà cô 🥺', 'Hông nhận là bọn em buồn lắm á!!', 'Thôi nhận đi cô ơi 🥺'];
+        function ne(e){
+            e.preventDefault();
+            lanNe++;
+            nut.textContent = cau[Math.min(lanNe, cau.length - 1)];
+
+            // tâm nút khi chưa bị đẩy đi (tính theo khung nhìn)
+            var r = nut.getBoundingClientRect();
+            var goc = { x: r.left + r.width / 2 - tx, y: r.top + r.height / 2 - ty };
+
+            // vùng nút được phép nằm trong màn hình (luôn nằm gọn trong màn hình)
+            var w = nut.offsetWidth, h = nut.offsetHeight, le = 14;
+            var minX = le + w / 2, maxX = window.innerWidth  - le - w / 2;
+            var minY = le + h / 2, maxY = window.innerHeight - le - h / 2;
+
+            // chọn chỗ mới, cách chỗ cũ ít nhất ~120px để thấy rõ là né
+            var nx, ny, thu = 0;
+            do {
+                nx = minX + Math.random() * Math.max(0, maxX - minX) - goc.x;
+                ny = minY + Math.random() * Math.max(0, maxY - minY) - goc.y;
+                thu++;
+            } while (Math.hypot(nx - tx, ny - ty) < 120 && thu < 12);
+
+            tx = nx; ty = ny;
+            nut.style.transform = 'translate(' + tx + 'px,' + ty + 'px) rotate(' + (Math.random() * 20 - 10) + 'deg)';
+        }
+        nut.addEventListener('mouseenter', ne);
+        nut.addEventListener('touchstart', ne, {passive: false});
+        nut.addEventListener('click', ne);
+    </script>
+</body>
+</html>
