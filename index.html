@@ -50,38 +50,81 @@
     </div>
     <script src="shared.js"></script>
     <script>
-        // Nút "Thôi khỏi đe!" cứ bị chạm vào là né sang chỗ khác :D
+        // Nút "Phiền lắm" cứ bị chạm vào là né sang chỗ khác :D
+        // (viết lại: nút được tách ra khỏi hàng nút và đặt theo toạ độ màn hình,
+        //  nên không còn bị giật khi di chuột vào nhiều lần)
         var nut = document.getElementById('khongnhan');
-        var lanNe = 0, tx = 0, ty = 0;
         var cau = ['Phiền lắm', 'Không nhận thật ạ 😞', 'Nhận đi mà cô 🥺', 'Hông nhận là bọn em buồn lắm á!!', 'Thôi nhận đi cô ơi 🥺'];
+        var lanNe = 0, daTach = false, khoa = false;
+        var px = 0, py = 0;            // góc trên-trái hiện tại của nút (toạ độ màn hình)
+        var LE = 14;                   // chừa mép màn hình
+        var MS = 350;                  // thời gian nút trượt sang chỗ mới (ms)
+
+        // Lần né đầu tiên: nhấc nút ra khỏi hàng, để lại một chỗ trống đúng cỡ nên hàng nút không bị xô lệch
+        function tach(){
+            var r = nut.getBoundingClientRect();
+            var cho = document.createElement('span');
+            cho.style.width = r.width + 'px';
+            cho.style.height = r.height + 'px';
+            nut.parentNode.insertBefore(cho, nut);
+            document.body.appendChild(nut);
+            nut.style.position = 'fixed';
+            nut.style.left = '0';
+            nut.style.top = '0';
+            nut.style.margin = '0';
+            nut.style.zIndex = '50';
+            nut.style.minWidth = r.width + 'px';
+            nut.style.maxWidth = (window.innerWidth - 2 * LE) + 'px';
+            nut.style.transition = 'none';
+            px = r.left; py = r.top;
+            nut.style.transform = 'translate(' + px + 'px,' + py + 'px)';
+            nut.offsetWidth;           // ép trình duyệt vẽ vị trí xuất phát trước khi trượt
+            nut.style.transition = 'transform ' + MS + 'ms cubic-bezier(.22,1,.36,1)';
+            daTach = true;
+        }
+
         function ne(e){
             e.preventDefault();
+            if (khoa) return;          // đang trượt thì bỏ qua, tránh bị kích hoạt dồn dập gây giật
+            khoa = true;
+            setTimeout(function(){ khoa = false; }, MS + 80);
+
+            if (!daTach) tach();
             lanNe++;
             nut.textContent = cau[Math.min(lanNe, cau.length - 1)];
 
-            // tâm nút khi chưa bị đẩy đi (tính theo khung nhìn)
-            var r = nut.getBoundingClientRect();
-            var goc = { x: r.left + r.width / 2 - tx, y: r.top + r.height / 2 - ty };
+            // vị trí con trỏ / ngón tay (để chọn chỗ mới tránh xa nó)
+            var t = (e.touches && e.touches[0]) || e;
+            var mx = (t.clientX !== undefined) ? t.clientX : -999;
+            var my = (t.clientY !== undefined) ? t.clientY : -999;
 
-            // vùng nút được phép nằm trong màn hình (luôn nằm gọn trong màn hình)
-            var w = nut.offsetWidth, h = nut.offsetHeight, le = 14;
-            var minX = le + w / 2, maxX = window.innerWidth  - le - w / 2;
-            var minY = le + h / 2, maxY = window.innerHeight - le - h / 2;
+            var w = nut.offsetWidth, h = nut.offsetHeight;
+            var maxX = Math.max(LE, window.innerWidth  - LE - w);
+            var maxY = Math.max(LE, window.innerHeight - LE - h);
 
-            // chọn chỗ mới, cách chỗ cũ ít nhất ~120px để thấy rõ là né
-            var nx, ny, thu = 0;
-            do {
-                nx = minX + Math.random() * Math.max(0, maxX - minX) - goc.x;
-                ny = minY + Math.random() * Math.max(0, maxY - minY) - goc.y;
-                thu++;
-            } while (Math.hypot(nx - tx, ny - ty) < 120 && thu < 12);
-
-            tx = nx; ty = ny;
-            nut.style.transform = 'translate(' + tx + 'px,' + ty + 'px) rotate(' + (Math.random() * 20 - 10) + 'deg)';
+            var nx = px, ny = py, tot = false;
+            for (var i = 0; i < 40 && !tot; i++){
+                nx = LE + Math.random() * (maxX - LE);
+                ny = LE + Math.random() * (maxY - LE);
+                var xaCu  = Math.hypot(nx - px, ny - py) > 140;                 // đủ xa chỗ cũ để thấy rõ là né
+                var xaTro = (mx < nx - 70 || mx > nx + w + 70 || my < ny - 70 || my > ny + h + 70);  // không nằm sát con trỏ
+                tot = xaCu && xaTro;
+            }
+            px = nx; py = ny;
+            nut.style.transform = 'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px) rotate(' + (Math.random() * 14 - 7).toFixed(1) + 'deg)';
         }
         nut.addEventListener('mouseenter', ne);
         nut.addEventListener('touchstart', ne, {passive: false});
         nut.addEventListener('click', ne);
+
+        // Xoay màn hình / đổi cỡ cửa sổ thì kéo nút về trong màn hình
+        window.addEventListener('resize', function(){
+            if (!daTach) return;
+            nut.style.maxWidth = (window.innerWidth - 2 * LE) + 'px';
+            px = Math.min(Math.max(LE, px), Math.max(LE, window.innerWidth  - LE - nut.offsetWidth));
+            py = Math.min(Math.max(LE, py), Math.max(LE, window.innerHeight - LE - nut.offsetHeight));
+            nut.style.transform = 'translate(' + px + 'px,' + py + 'px)';
+        });
     </script>
 </body>
 </html>
