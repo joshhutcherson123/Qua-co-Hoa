@@ -18,10 +18,13 @@ html{ height: 100%; }
 body{
     margin: 0;
     min-height: 100vh;
-    /* ảnh nằm cùng thư mục với file css */
-    background: linear-gradient(to bottom, var(--rose-soft), var(--cream));
-    background-size: cover, 600px auto;
-    background-attachment: fixed;
+    /* lớp trên: họa tiết icon lặp lại (bg-pattern.webp, nằm cùng thư mục với file css)
+       lớp dưới: nền hồng nhạt chuyển dần sang kem.
+       Muốn icon to/nhỏ hơn thì đổi số 560px; muốn đậm/nhạt hơn thì làm lại ảnh bg-pattern.webp */
+    background-image: url('bg-pattern.webp'), linear-gradient(to bottom, var(--rose-soft), var(--cream));
+    background-repeat: repeat, no-repeat;
+    background-size: 560px auto, cover;
+    background-attachment: fixed, fixed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,12 +37,13 @@ body{
 }
 
 /* ============ CHUYỂN TRANG ============ */
-body{ animation: pageIn 0.8s cubic-bezier(.2,.7,.2,1) both; }
+/* 'backwards' (không giữ trạng thái sau khi chạy xong) để các lớp position:fixed bám theo màn hình đúng */
+body{ animation: pageIn 0.8s cubic-bezier(.2,.7,.2,1) backwards; }
 body.leaving{ animation: pageOut 0.45s ease-in both; pointer-events: none; }
 
 @keyframes pageIn{
     from{ opacity: 0; transform: translateY(24px) scale(0.98); filter: blur(6px); }
-    to{ opacity: 1; transform: none; filter: blur(0); }
+    to{ opacity: 1; transform: none; filter: none; }
 }
 @keyframes pageOut{
     to{ opacity: 0; transform: translateY(-20px) scale(1.02); filter: blur(6px); }
